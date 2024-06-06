@@ -1,45 +1,63 @@
 const getState = ({ getStore, getActions, setStore }) => {
-	return {
-		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
-		},
-		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
-			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
-
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
-			}
-		}
-	};
+  return {
+    store: {
+      // vamos a guardar la informacion global
+      /**
+       * { key: value } - { llave: valor }
+       */
+      posts: [],
+    },
+    actions: {
+      // vamos a modificar la informacion global
+      getPost: async () => {
+        try {
+          const response = await fetch(
+            "https://jsonplaceholder.typicode.com/posts"
+          );
+          if (!response.ok) {
+            throw new Error("There has been an error");
+          }
+          const data = await response.json();
+          setStore({ posts: data });
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      addPost: async (post) => {
+        const store = getStore();
+        // {title: string, body: string}
+        try {
+          const response = await fetch(
+            "https://jsonplaceholder.typicode.com/posts",
+            {
+              method: "POST",
+              body: JSON.stringify({
+                // title: post.title,
+                // body: post.body,
+                ...post, // title, body
+                userId: 1,
+              }),
+              // Encabezado de la peticion
+              // Content-type -> formato json
+              headers: {
+                "Content-type": "application/json",
+              },
+            }
+          );
+          if (response.ok) {
+            // alert("Has creado un post");
+            // setTodoList([...todoList, nuevaTarea])
+            const data = await response.json();
+            setStore({ posts: [...store.posts, data] });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      editPost: async () => {},
+      deletePost: async () => {},
+    },
+  };
 };
 
 export default getState;
