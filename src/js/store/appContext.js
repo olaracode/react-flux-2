@@ -29,9 +29,12 @@ const injectContext = (PassedComponent) => {
        * store, instead use actions, like this:
        *
        * state.actions.loadSomeData(); <---- calling this function from the flux.js actions
-       *
+       * Se ejecuta a penas carga la pagina. Sin importar en que vista estes
+       * ! Unica y exclusivamente para la informacion inicial
        **/
       state.actions.getPost();
+      // state.actions.getUserData();
+      // state.actions.getUserWallet();
     }, []);
 
     // The initial value for the context is not null anymore, but the current state of this component,
