@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
+import { Toaster } from "sonner";
 // Buena practica
 import { Home } from "./views/home";
 import CreatePost from "./views/CreatePost.jsx";
@@ -23,6 +23,8 @@ const Layout = () => {
     <div>
       <BrowserRouter basename={basename}>
         <ScrollToTop>
+          {/* Tostadora */}
+          <Toaster />
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />

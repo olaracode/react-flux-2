@@ -1,3 +1,8 @@
+import { toast } from "sonner";
+// No podemos usar hooks
+// useNavigate();
+
+// Tostada
 const getState = ({ getStore, getActions, setStore }) => {
   // { store: {...}, actions: {...} }
   return {
@@ -44,7 +49,10 @@ const getState = ({ getStore, getActions, setStore }) => {
             // setTodoList([...todoList, nuevaTarea])
             const data = await response.json();
             setStore({ posts: [...store.posts, data] });
-            actions.getPost();
+            toast("Post creado");
+            return true;
+          } else {
+            toast.error("Ha ocurrido un error");
           }
         } catch (error) {
           console.log(error);
